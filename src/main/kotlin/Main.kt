@@ -1,5 +1,51 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+/////////////////////////////////////////////
+//
+// Практическая №1. Основы
+// Выполнили Турчанинов А.Е. и Мамбетов Н.А.
+// Политехнический колледж городского хозяйства
+// Группа: ИП-23-3
+// 3 Курс 1 семестр, 1 неделя 6 день, солнечная погода, настроение отличное
+// Задание: Создать приложение, которое подсчитывает количество подряд идущих одинаковых символов во введенной строке.
+// На вход подается, например, строка AAADSSSRRTTHAAAA. На выходе получаем A3DS3R2T2HA4.
+// То есть, если количество подряд идущих символов меньше двух, то мы не пишем единицу
+//
+/////////////////////////////////////////////
 
-    println("Program arguments: ${args.joinToString()}")
+fun main() {
+    println("Программа для задач")
+
+    startMenuCycle()
+}
+
+fun startMenuCycle() {
+    println("Выберите задачу: ")
+    println("1 - Сокращение строк")
+    println("2 - ")
+    println("3 - ")
+    println("4 - ")
+    println("5 - ")
+    println("6 - ")
+    print("Ваш выбор - ")
+
+    var chosenTask: Int = readln().toInt()
+
+    when (chosenTask) {
+        1 -> task1()
+        2 -> task1()
+        3 -> task1()
+        4 -> task1()
+        5 -> task1()
+        6 -> task1()
+        else -> println("Неверный ввод данных")
+    }
+}
+
+
+fun task1() {
+    println("Введите строку пожалуйста: ")
+    var chosenTask: Int = readln().toInt()
+}
+
+fun reduceString(target: String) {
+    var result: String
 }
