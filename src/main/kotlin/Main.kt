@@ -1,12 +1,10 @@
 /////////////////////////////////////////////
 //
 // Практическая №1. Основы
-// Выполнили Турчанинов А.Е. и Мамбетов Н.А.
+// Выполнили Турчанинов А.Е.
 // Политехнический колледж городского хозяйства
 // Группа: ИП-23-3
 // 3 Курс 1 семестр
-//
-//
 //
 /////////////////////////////////////////////
 
@@ -19,6 +17,7 @@ fun main() {
     var continueState = true
 
     do {
+        println()
         continueState = startMenuCycle()
     } while (continueState)
 
@@ -26,22 +25,25 @@ fun main() {
 }
 
 fun startMenuCycle(): Boolean {
-    println("Выберите задачу: ")
-    println("1 - Сокращение строк")
-    println("2 - Подсчёт символов")
-    println("3 - Перевод из 10-ичной системы в двоичную")
-    println("4 - Калькулятор")
-    println("5 - Нахождение целочисленного показателя")
-    println("6 - Существует ли нечётное число из 2 цифр")
-    println("7 - Выход из программы")
+    println("""
+        Выберите задачу:
+         1 - Сокращение строк
+         2 - Подсчёт символов
+         3 - Перевод из 10-ичной системы в двоичную
+         4 - Калькулятор
+         5 - Нахождение целочисленного показателя
+         6 - Существует ли нечётное число из 2 цифр
+         7 - Выход из программы
+         """.trimIndent())
     print("Ваш выбор - ")
 
     var chosenTask = 1
 
     try {
         chosenTask = readln().toInt()
+        
     } catch (_: Exception) {
-        print("Вводить только числа - ")
+        print("Вводить только числа")
         return true
     }
 
@@ -53,19 +55,20 @@ fun startMenuCycle(): Boolean {
         5 -> task5()
         6 -> task6()
         7 -> return false
+        
         else -> println("Неверный ввод данных")
     }
 
     return true
 }
 
-fun task1() {
+private fun task1() {
     print("Введите строку пожалуйста: ")
-    val response: String = readln()
+    val response = readln()
 
     fun reduceString(target: String): String {
-        var result: String = ""
-        var count: Int = 1
+        var result = ""
+        var count = 1
 
         for (i in 1..target.length - 1) {
             if (target[i] == target[i - 1]) {
@@ -91,12 +94,12 @@ fun task1() {
     println("результат: ${reduceString(response)}")
 }
 
-fun task2() {
+private fun task2() {
     print("Введите строку пожалуйста: ")
-    val response: String = readln()
+    val response = readln()
 
-    fun countLetters(target: String) {
-        val result = mutableMapOf<Char, Int>()
+    fun countLettersOutOf(target: String) {
+        val result = sortedMapOf<Char, Int>()
 
         for (character in target) {
             if (result.containsKey(character)) {
@@ -106,19 +109,17 @@ fun task2() {
             }
         }
 
-        val sortedResult = result.keys.sorted()
-
-        for (key in sortedResult) {
-            println("$key - ${result[key]}")
+        for ((key, value) in result) {
+            println("$key - $value")
         }
     }
 
-    countLetters(response)
+    countLettersOutOf(response)
 }
 
-fun task3() {
+private fun task3() {
     print("Введите натуральное число пожалуйста: ")
-    var response: Int = 0
+    var response = 0
 
     try {
         response = readln().toInt()
@@ -129,7 +130,7 @@ fun task3() {
 
     fun translateToBinary(target: Int): String {
         var targetCopy = target
-        var result: String = ""
+        var result = ""
 
         while (targetCopy > 0) {
             result += targetCopy % 2
@@ -140,24 +141,28 @@ fun task3() {
     }
 
     val result = translateToBinary(response)
-    println("Результат: ${result}")
+    println("Результат: $result")
 }
 
-fun task4() {
+fun isInteger(number: Double): Boolean {
+    return number == number.toInt().toDouble()
+}
+
+private fun task4() {
     print("Введите 2 числа и знак операции пожалуйста: ")
-    val response: String = readLine() ?: ""
-    val responseParts = response.split(" ")
+    val response = readlnOrNull()
+    val responseParts = response!!.split(" ")
 
     if (responseParts.size != 3) {
         println("Ввод должен быть в формате ЧИСЛО1 ЧИСЛО2 ОПЕРАЦИЯ")
         return
     }
 
-    val firstNumber: Double = responseParts[0].toDouble()
-    val secondNumber: Double = responseParts[1].toDouble()
-    val operation: String = responseParts[2]
+    val firstNumber = responseParts[0].toDouble()
+    val secondNumber = responseParts[1].toDouble()
+    val operation = responseParts[2]
 
-    var result: Double = when(operation) {
+    var result = when(operation) {
         "+" -> firstNumber + secondNumber
         "-" -> firstNumber - secondNumber
         "*" -> firstNumber * secondNumber
@@ -171,58 +176,63 @@ fun task4() {
         }
     }
 
-    println("Результат: ${result}")
+    if (isInteger(result)) {
+        println("Результат: ${result.toInt()}")
+    } else {
+        println("Результат: $result")
+    }
 }
 
-fun task5() {
+private fun task5() {
     var base = 0.0
     var x = 0.0
 
-    print("Введите целое число n и основание степени пожалуйста: \n")
-
     try {
-        base = readln().toDouble()
+        print("Введите целое число: \n")
         x = readln().toDouble()
-    } catch (_: Exception) {
-        print("Вводить только числа - ")
-        return
-    }
+        print("Введите основание степени: \n")
+        base = readln().toDouble()
 
-    fun isInteger(number: Double): Boolean {
-        return number == number.toInt().toDouble()
+    } catch (_: Exception) {
+        print("Вводить только числа")
+        return
     }
 
     val result = log(x, base)
 
     if (isInteger(result)) {
         println("Целочисленный показатель существует: ${result.toInt()}")
+
     } else {
         println("Целочисленный показатель не существует")
     }
 }
 
-fun task6() {
+private fun task6() {
     var firstDigit = 0
     var secondDigit = 0
 
-    print("Введите две цифры: \n")
-
     try {
+        print("Введите 1 цифру: \n")
         firstDigit = readln().toInt()
+        print("Введите 2 цифру: \n")
         secondDigit = readln().toInt()
 
         if (firstDigit < 0 || firstDigit > 9 || secondDigit < 0 || secondDigit > 9) {
             throw InvalidParameterException()
         }
+
     } catch (_: Exception) {
-        print("Вводить только цифры - ")
+        print("Вводить только цифры")
         return
     }
 
     if (firstDigit % 2 != 0) {
-        println("Возможно нечётное число: ${secondDigit}${firstDigit}")
+        println("Возможно нечётное число: $secondDigit$firstDigit")
+
     } else if(secondDigit % 2 != 0) {
-        println("Возможно нечётное число: ${firstDigit}${secondDigit}")
+        println("Возможно нечётное число: $firstDigit$secondDigit")
+
     } else {
         println("нечётное число не возможно получить из этих цифр")
     }
