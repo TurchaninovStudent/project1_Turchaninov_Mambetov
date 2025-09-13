@@ -1,42 +1,48 @@
-import jdk.dynalink.Operation
-import java.lang.Exception
-
 /////////////////////////////////////////////
 //
 // Практическая №1. Основы
 // Выполнили Турчанинов А.Е. и Мамбетов Н.А.
 // Политехнический колледж городского хозяйства
 // Группа: ИП-23-3
-// 3 Курс 1 семестр, 1 неделя 6 день, солнечная погода, настроение отличное
-// Задание: Создать приложение, которое подсчитывает количество подряд идущих одинаковых символов во введенной строке.
-// На вход подается, например, строка AAADSSSRRTTHAAAA. На выходе получаем A3DS3R2T2HA4.
-// То есть, если количество подряд идущих символов меньше двух, то мы не пишем единицу
+// 3 Курс 1 семестр
+//
+//
 //
 /////////////////////////////////////////////
 
+import java.lang.Exception
+import java.security.InvalidParameterException
+import kotlin.math.log
+
 fun main() {
     println("Программа для задач")
+    var continueState = true
 
-    startMenuCycle()
+    do {
+        continueState = startMenuCycle()
+    } while (continueState)
+
+    println("Увидимся в следующий раз")
 }
 
-fun startMenuCycle() {
+fun startMenuCycle(): Boolean {
     println("Выберите задачу: ")
     println("1 - Сокращение строк")
     println("2 - Подсчёт символов")
     println("3 - Перевод из 10-ичной системы в двоичную")
     println("4 - Калькулятор")
-    println("5 - ")
-    println("6 - ")
+    println("5 - Нахождение целочисленного показателя")
+    println("6 - Существует ли нечётное число из 2 цифр")
+    println("7 - Выход из программы")
     print("Ваш выбор - ")
 
-    var chosenTask: Int = 1
+    var chosenTask = 1
 
     try {
         chosenTask = readln().toInt()
     } catch (_: Exception) {
         print("Вводить только числа - ")
-        return
+        return true
     }
 
     when (chosenTask) {
@@ -44,10 +50,13 @@ fun startMenuCycle() {
         2 -> task2()
         3 -> task3()
         4 -> task4()
-        5 -> task1()
-        6 -> task1()
+        5 -> task5()
+        6 -> task6()
+        7 -> return false
         else -> println("Неверный ввод данных")
     }
+
+    return true
 }
 
 fun task1() {
@@ -79,7 +88,7 @@ fun task1() {
         return result
     }
 
-    println(reduceString(response))
+    println("результат: ${reduceString(response)}")
 }
 
 fun task2() {
@@ -110,10 +119,11 @@ fun task2() {
 fun task3() {
     print("Введите натуральное число пожалуйста: ")
     var response: Int = 0
+
     try {
         response = readln().toInt()
     } catch (_: Exception) {
-        print("Вводить только числа - ")
+        print("Вводить только числа")
         return
     }
 
@@ -162,4 +172,58 @@ fun task4() {
     }
 
     println("Результат: ${result}")
+}
+
+fun task5() {
+    var base = 0.0
+    var x = 0.0
+
+    print("Введите целое число n и основание степени пожалуйста: \n")
+
+    try {
+        base = readln().toDouble()
+        x = readln().toDouble()
+    } catch (_: Exception) {
+        print("Вводить только числа - ")
+        return
+    }
+
+    fun isInteger(number: Double): Boolean {
+        return number == number.toInt().toDouble()
+    }
+
+    val result = log(x, base)
+
+    if (isInteger(result)) {
+        println("Целочисленный показатель существует: ${result.toInt()}")
+    } else {
+        println("Целочисленный показатель не существует")
+    }
+}
+
+fun task6() {
+    var firstDigit = 0
+    var secondDigit = 0
+
+    print("Введите две цифры: \n")
+
+    try {
+        firstDigit = readln().toInt()
+        secondDigit = readln().toInt()
+
+        if (firstDigit < 0 || firstDigit > 9 || secondDigit < 0 || secondDigit > 9) {
+            throw InvalidParameterException()
+        }
+    } catch (_: Exception) {
+        print("Вводить только цифры - ")
+        return
+    }
+
+    if (firstDigit % 2 != 0) {
+        println("Возможно нечётное число: ${secondDigit}${firstDigit}")
+    } else if(secondDigit % 2 != 0) {
+        println("Возможно нечётное число: ${firstDigit}${secondDigit}")
+    } else {
+        println("нечётное число не возможно получить из этих цифр")
+    }
 }
